@@ -26,6 +26,7 @@ public class LiveViewThread  implements Runnable{
    private MMStudio gui_;
    private boolean stopping_;
    private AcquisitionThread acqThread_;
+   private java.lang.Object  pix_;
 
 
    public LiveViewThread(MMStudio gui, AcquisitionThread acqThread){
@@ -56,20 +57,16 @@ public class LiveViewThread  implements Runnable{
          stopping_ = false;
          while (!stopping_){
             if (core_.isSequenceRunning() ){
-                //if there is anything in the circular buffer 
-                // use most recent image
-                if (core_.getRemainingImageCount()>0){
-                    //show the next image
-                    liveIm.getProcessor().setPixels(core_.getLastImage());
-                   }
-                else{
-                    //otherwise use last saved image
-                    liveIm.getProcessor().setPixels(acqThread_.acqStack.getPixels(acqThread_.curFrame_));
-                }
-               IJ.run(liveIm, "Enhance Contrast", "saturated="+imSatPc_);
-               liveIm.setTitle(IM_TITLE+" "+(acqThread_.getCurFrame_()+1)+"/"+acqThread_.getnFrame_());
-               liveIm.updateAndDraw();
-               liveIm.show();
+                // uses last image written to RAM
+                // this assumes writing out of the circular 
+                // buffer is fast 
+                pix_=acqThread_.acqStack.getPixels(acqThread_.curFrame_);
+                liveIm.getProcessor().setPixels(pix_);                
+
+                IJ.run(liveIm, "Enhance Contrast", "saturated="+imSatPc_);
+                liveIm.setTitle(IM_TITLE+" "+(acqThread_.getCurFrame_()+1)+"/"+acqThread_.getnFrame_());
+                liveIm.updateAndDraw();
+                liveIm.show();
             }
             Thread.sleep(WAIT_TIME);
          }
