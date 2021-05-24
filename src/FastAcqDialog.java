@@ -22,7 +22,7 @@ public class FastAcqDialog extends javax.swing.JDialog{
    private RunAcquisition runAcq_ = null;
 
    private int nFrame_ = 1000;
-   private String rootDirName_ = "C:\\Program Files\\Micro-Manager-1.4";
+   private String rootDirName_ = "";
    private String imNamePrefix_ = "testIm";
    private double imSatPc_ = 0.2;
    
