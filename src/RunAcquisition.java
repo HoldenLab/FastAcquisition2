@@ -75,12 +75,7 @@ public class RunAcquisition {
       this.nFrame_ = nFrame_;
    }
 
-   void startAcquisition(String rootDirName, String imNamePrefix, int nFrames, boolean showLiveView, double imSatPc) {
-      rootDirName_ = rootDirName;
-      imNamePrefix_ = imNamePrefix;
-      nFrame_ = nFrames;
-
-      makeAbsolutePath();
+   void startAcquisition(boolean showLiveView, double imSatPc) {
 
       if (absoluteImPath_ !=null && nFrame_>0 && isEnoughRam()){
          if (acqThread_== null){
@@ -104,6 +99,14 @@ public class RunAcquisition {
       } else {
          gui_.logs().logError(new Exception("Error: absoluteImPath_ or nFrame_ not initialized"));
       }
+   }
+
+   void allocateStorage(String rootDirName, String imNamePrefix, int nFrames) {
+      rootDirName_ = rootDirName;
+      imNamePrefix_ = imNamePrefix;
+      nFrame_ = nFrames;
+
+      makeAbsolutePath();
    }
 
    void stopAcquisition() {

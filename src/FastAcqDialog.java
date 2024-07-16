@@ -54,6 +54,7 @@ public class FastAcqDialog extends javax.swing.JDialog{
         jTextField_nFrame = new javax.swing.JTextField();
         jTextField_rootDir = new javax.swing.JTextField();
         jTextField_imName = new javax.swing.JTextField();
+        jButton_allocate = new javax.swing.JButton();
         jButton_acquire = new javax.swing.JButton();
         jButton_stop = new javax.swing.JButton();
         jButton_chooseDir = new javax.swing.JButton();
@@ -96,6 +97,13 @@ public class FastAcqDialog extends javax.swing.JDialog{
             }
         });
 
+        jButton_acquire.setText("Prep Acquisition");
+        jButton_acquire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_allocateActionPerformed(evt);
+            }
+        });
+
         jButton_stop.setText("Stop");
         jButton_stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +134,8 @@ public class FastAcqDialog extends javax.swing.JDialog{
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
+                        .add(jButton_allocate)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jButton_acquire)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jButton_stop, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 73, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -170,6 +180,7 @@ public class FastAcqDialog extends javax.swing.JDialog{
                     .add(jTextField_imName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jButton_allocate)
                     .add(jButton_acquire)
                     .add(jButton_stop))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -215,8 +226,12 @@ public class FastAcqDialog extends javax.swing.JDialog{
    }//GEN-LAST:event_jButton_chooseDirActionPerformed
 
    private void jButton_acquireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_acquireActionPerformed
-      runAcq_.startAcquisition(rootDirName_,imNamePrefix_,nFrame_,true,imSatPc_);
+      runAcq_.startAcquisition(true,imSatPc_);
    }//GEN-LAST:event_jButton_acquireActionPerformed
+
+   private void jButton_allocateActionPerformed(java.awt.event.ActionEvent evt) { // 240716 JE
+      runAcq_.allocateStorage(rootDirName_,imNamePrefix_,nFrame_);
+   }
 
    private void jButton_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_stopActionPerformed
       runAcq_.stopAcquisition();
@@ -252,6 +267,7 @@ public class FastAcqDialog extends javax.swing.JDialog{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_acquire;
+    private javax.swing.JButton jButton_allocate; // 240716 JE
     private javax.swing.JButton jButton_chooseDir;
     private javax.swing.JButton jButton_stop;
     private javax.swing.JLabel jLabel1;
