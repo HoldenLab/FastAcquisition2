@@ -77,20 +77,29 @@ public class RunAcquisition {
 
    void startAcquisition(boolean showLiveView, double imSatPc) {
 
+      if (at1_ !=null){
+        at1_.start();
+        gui_.logs().logMessage("Started new AcquisitionThread.");
+      } else {
+         gui_.logs().logError(new Exception("Acquisition not prepared"));
+      }
+   }
+
+   void allocateStorage(String rootDirName, String imNamePrefix, int nFrames, boolean showLiveView, double imSatPc) {
+      rootDirName_ = rootDirName;
+      imNamePrefix_ = imNamePrefix;
+      nFrame_ = nFrames;
+
+      makeAbsolutePath();
+      
       if (absoluteImPath_ !=null && nFrame_>0 && isEnoughRam()){
          if (acqThread_== null){
             acqThread_= new AcquisitionThread(gui_,absoluteImPath_,nFrame_,showLiveView,imSatPc);
-            at1_ = new Thread(acqThread_);
-            at1_.start();
-            gui_.logs().logMessage("Started new AcquisitionThread.");            
-         } else if (at1_ == null || !at1_.isAlive()){
             acqThread_.setAbsoluteImPath_(absoluteImPath_);
             acqThread_.setnFrame_(nFrame_);
             acqThread_.setShowLiveView_(showLiveView);
             acqThread_.setImSatPc_(imSatPc);
             at1_ = new Thread(acqThread_);
-            at1_.start();
-            gui_.logs().logMessage("Reused existing AcquisitionThread.");
          } else {
             gui_.logs().showMessage("Warning: Cannot start new acqusition while a previous acquistion is still running");
          } 
@@ -99,14 +108,6 @@ public class RunAcquisition {
       } else {
          gui_.logs().logError(new Exception("Error: absoluteImPath_ or nFrame_ not initialized"));
       }
-   }
-
-   void allocateStorage(String rootDirName, String imNamePrefix, int nFrames) {
-      rootDirName_ = rootDirName;
-      imNamePrefix_ = imNamePrefix;
-      nFrame_ = nFrames;
-
-      makeAbsolutePath();
    }
 
    void stopAcquisition() {
