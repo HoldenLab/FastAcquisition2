@@ -97,8 +97,8 @@ public class FastAcqDialog extends javax.swing.JDialog{
             }
         });
 
-        jButton_acquire.setText("Prep Acquisition");
-        jButton_acquire.addActionListener(new java.awt.event.ActionListener() {
+        jButton_allocate.setText("Prep Acquisition");
+        jButton_allocate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_allocateActionPerformed(evt);
             }
@@ -230,7 +230,7 @@ public class FastAcqDialog extends javax.swing.JDialog{
    }//GEN-LAST:event_jButton_acquireActionPerformed
 
    private void jButton_allocateActionPerformed(java.awt.event.ActionEvent evt) { // 240716 JE
-      runAcq_.allocateStorage(rootDirName_,imNamePrefix_,nFrame_);
+      runAcq_.allocateStorage(rootDirName_,imNamePrefix_,nFrame_,true,imSatPc_);
    }
 
    private void jButton_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_stopActionPerformed
