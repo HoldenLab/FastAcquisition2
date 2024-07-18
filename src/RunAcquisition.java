@@ -95,11 +95,14 @@ public class RunAcquisition {
       if (absoluteImPath_ !=null && nFrame_>0 && isEnoughRam()){
          if (acqThread_== null){
             acqThread_= new AcquisitionThread(gui_,absoluteImPath_,nFrame_,showLiveView,imSatPc);
+            at1_ = new Thread(acqThread_);   
+         } else if (at1_ == null || !at1_.isAlive()){
             acqThread_.setAbsoluteImPath_(absoluteImPath_);
             acqThread_.setnFrame_(nFrame_);
             acqThread_.setShowLiveView_(showLiveView);
             acqThread_.setImSatPc_(imSatPc);
             at1_ = new Thread(acqThread_);
+            gui_.logs().logMessage("Reused existing AcquisitionThread.");
          } else {
             gui_.logs().showMessage("Warning: Cannot start new acqusition while a previous acquistion is still running");
          } 
