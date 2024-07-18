@@ -108,6 +108,7 @@ public class RunAcquisition {
       } else {
          gui_.logs().logError(new Exception("Error: absoluteImPath_ or nFrame_ not initialized"));
       }
+      acqThread_.prepAcquisition();
    }
 
    void stopAcquisition() {

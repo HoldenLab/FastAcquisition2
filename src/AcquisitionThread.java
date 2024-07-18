@@ -30,6 +30,7 @@ public class AcquisitionThread implements Runnable{
    private Thread lt1;
    public int curFrame_ = 0;
    ImageStack acqStack = null;
+   ImagePlus acqIm = null;
    
    AcquisitionThread(MMStudio gui, String absoluteImPath, int nFrame, boolean showLiveView,double imSatPc){
       gui_ = gui;
@@ -39,31 +40,13 @@ public class AcquisitionThread implements Runnable{
       nFrame_ = nFrame;
       showLiveView_ = showLiveView;
       imSatPc_ = imSatPc;
+      
    }
 
    @Override
    public void run() {
       try {
-         //----------------------------------------
-         //acquire and save the image without using the mda
-         // assumes 16 bit images
-         int w = (int) core_.getImageWidth();
-         int h = (int) core_.getImageHeight();
-         long depth = core_.getBytesPerPixel();  
-  
-         ImagePlus acqIm = null;
-         if (depth ==1){
-            acqIm = NewImage.createByteImage("Fast Acquisition", w, h, nFrame_,NewImage.FILL_BLACK);
-         } else if (depth==2){
-            acqIm = NewImage.createShortImage("Fast Acquisition", w, h, nFrame_,NewImage.FILL_BLACK);
-         } else {
-            gui_.logs().logError("Error: Unsupported camera BitDepth");
-            gui_.logs().showError("Error: Unsupported camera BitDepth");
-         }
-
-         acqStack = acqIm.getStack();
          
-         core_.stopSequenceAcquisition();//stop previous acqs or live mode.
          if (showLiveView_){
             startLiveView();
          }
@@ -97,6 +80,34 @@ public class AcquisitionThread implements Runnable{
          gui_.logs().logError(ex);
       }
 
+   }
+   
+   public void prepAcquisition(){
+      try{
+       //----------------------------------------
+         //acquire and save the image without using the mda
+         // assumes 16 bit images
+         int w = (int) core_.getImageWidth();
+         int h = (int) core_.getImageHeight();
+         long depth = core_.getBytesPerPixel();  
+  
+         
+         if (depth ==1){
+            acqIm = NewImage.createByteImage("Fast Acquisition", w, h, nFrame_,NewImage.FILL_BLACK);
+         } else if (depth==2){
+            acqIm = NewImage.createShortImage("Fast Acquisition", w, h, nFrame_,NewImage.FILL_BLACK);
+         } else {
+            gui_.logs().logError("Error: Unsupported camera BitDepth");
+            gui_.logs().showError("Error: Unsupported camera BitDepth");
+         }
+
+         acqStack = acqIm.getStack();
+         
+         core_.stopSequenceAcquisition();//stop previous acqs or live mode.
+      }
+      catch (Exception ex) {
+         gui_.logs().logError(ex);
+      }
    }
 
    public void abortAcquisition(){
